@@ -1,0 +1,61 @@
+# Named Tuples
+from collections import namedtuple
+
+# Define a named tuple type
+# The first argument is the name of the new named tuple type
+# The second argument is a string of field names separated by spaces or a list of strings
+Point = namedtuple('Point', ['x', 'y'])
+
+# Create an instance of the named tuple
+p1 = Point(x=1, y=2)
+p2 = Point(3, 4) # You can also use positional arguments
+
+print(p1.x) # Output: 1
+print(p2.y) # Output: 4
+print(p1[0]) # Output: 1
+print(p2[1]) # Output: 4
+
+# namedtuple instances are immutable, just like regular tuples. They inherit from the tuple class, so they
+# can be used wherever regular tuples are expected.
+# namedtuple is particularly useful for creating simple classes or data structures without the boilerplate
+# of a full class definition, improving code readability when dealing with structured data.
+
+# Tuple Use Cases
+def get_dimensions():
+    width = 100
+    height = 200
+    return width, height # Implicitly returns (width, height)
+
+w, h = get_dimensions() # Tuple unpacking
+print(f"Width: {w}, Height: {h}")
+
+coordinate = (40.7128, -74.0060)
+color = (255, 0, 0) # Red
+
+location_data = {
+    (40.7128, -74.0060): "New York City",
+    (34.0522, -118.2437): "Los Angeles"
+}
+print(location_data[(40.7128, -74.0060)]) # Output: NYC
+
+# Protecting Data Integrity: Using a tuple ensures that the data collection passed around in your program is
+# not accidentally modified. 
+# Iterating over items that shouldn't be changed: When processing a collection where you only need
+# to read the values, a tuple might be slightly more performant than a list. 
+# Sequence Unpacking: As seen in tuple packing/unpacking, tuples are fundamental to this feature.
+
+# Accessing Values. [] .get()
+person = {"name": "Alice", "age": 30, "city": "New York"}
+
+print(person["name"]) # Output: Alice
+print(person["age"]) # Output: 30
+# print(person["zip_code"]) # Raises KeyError
+
+print(person.get("name")) # Output: Alice
+print(person.get("zip_code")) # Output: None (key not found)
+print(person.get("zip_code", "Not Available")) # Output: Not Available (provides a default)
+print(person.get("age")) # Output: 30
+
+print("name" in person) # Output: True
+print("zip_code" in person) # Output: False
+
