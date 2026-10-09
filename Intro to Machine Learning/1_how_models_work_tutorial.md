@@ -12,7 +12,7 @@ Machine learning works the same way. We'll start with a model called the Decisio
 
 For simplicity, we'll start with the simplest possible decision tree.
 
-![alt text](image.png)
+![alt text](images/image.png)
 
 It divides houses into only two categories. The predicted price for any house under consideration is the historical average price of houses in the same category.
 
@@ -24,13 +24,13 @@ The details of how the model is fit (e.g. how to split up the data) is complex e
 
 Which of the following two decision trees is more likely to result from fitting the real estate training data?
 
-![alt text](image-1.png)
+![alt text](images/image-1.png)
 
 The decision tree on the left (Decision Tree 1) probably makes more sense, because it captures the reality that houses with more bedrooms tend to sell at higher prices than houses with fewer bedrooms. The biggest shortcoming of this model is that it doesn't capture most factors affecting home price, like number of bathrooms, lot size, location, etc.
 
 You can capture more factors using a tree that has more "splits." These are called "deeper" trees. A decision tree that also considers the total size of each house's lot might look like this:
 
-![alt text](image-2.png)
+![alt text](images/image-2.png)
 
 You predict the price of any house by tracing through the decision tree, always picking the path corresponding to that house's characteristics. The predicted price for the house is at the bottom of the tree. The point at the bottom where we make a prediction is called a leaf.
 
