@@ -1,0 +1,78 @@
+<!-- markdownlint-disable -->
+
+# Scrapwork: R GUI, RStudio, and R code
+
+## Level 1 Growth Model -> Longitudinal Data Analysis
+
+The parentheses just group a recoded time variable. $(\text{AGE} - 11)$ is the slides' version of TIME, and it is 
+time-centred at age 11. It isn't a new kind of term, and nothing is being multiplied by anything else. 
+
+### What it does
+
+Define $\text{TIME} = \text{AGE} - 11$. Then:
+
+| AGE | 11 | 13 | 15 |
+| --- | -- | -- | -- |
+| TIME = AGE - 11 | 0 | 2 | 4 |
+
+So the model is the same Level 1 equation as before, $Y = \pi_0 + \pi_1(\text{TIME}) + \epsilon$, with TIME 
+written out as its definition. The subscript $ij$ after the parentheses means the whole quantity can differ by 
+person $i$ and occasion $j$, because each teen has their own ages at each wave.
+
+### Why centre at 11 instead of using raw AGE
+
+It changes what the intercept $\pi_{0i}$ means.
+
+With raw AGE, the intercept is the expected delinquency at age 0. That is meaningless, since nobody in the sample 
+is 0 and the line would be extrapolated far outside the data. With AGE - 11, the intercept is the expected
+delinquency at age 11, the first wave. That is why the slide labels it "initial status", and it is why the arrow 
+points to where the dotted line meets age 11 on the plot (about 2).
+
+The slope does not change when you centre. It is still the change in the outcome per year, which is the 
+"growth rate" in the second callout.
+
+### Same line, different intercept
+
+Suppose a teen's line is $\text{DelBeh} = 2 + 2(\text{AGE} - 11)$.
+
+- Centred form: intercept = 2 at age 11, slope = 2.
+- Expanding it: $2 + 2\text{AGE} - 22 = -20 + 2 \cdot \text{AGE}$, so the uncentred intercept is -20.
+
+These are the same line. An intercept of -20 would imply negative delinquent acts at age 0, which makes no sense, 
+so the centred coding is the useful one.
+
+### Choosing where to centre
+
+You can pick any meaningful reference point:
+
+- First wave (AGE - 11): intercept = initial status. This is the usual choice for growth models.
+- Midpoint (AGE - 13): intercept = status in the middle of the study.
+- Last wave (AGE - 15): intercept = final status.
+
+The choice also changes the variance of the intercepts and the intercept-slope correlation (the random effects), 
+so it matters when you interpret those. Fit quality and the slope estimate stay the same.
+
+```r, echo=FALSE, out.width="70%", fig.cap="Growth trajectories"
+setwd("~/Kaggle_Courses/R Programming")
+
+knitr::include_graphics("images/capture.png")
+
+d <- read.csv("yourdata.csv")      # or readxl::read_excel("yourdata.xlsx")
+str(d)                             # check the column names
+
+set.seed(1)
+d <- data.frame(
+  id    = rep(1:20, each = 3),
+  age   = rep(c(11, 13, 15), times = 20)
+)
+d$time   <- d$age - 11
+d$delbeh <- 2 + 2 * d$time + rep(rnorm(20, 0, 1), each = 3) + rnorm(60, 0, 1)
+
+install.packages("lme4")   # once
+library(lme4)              # each session, at the top of your Rmd
+
+d$time <- d$age - 11
+m1 <- lmer(delbeh ~ time + (1 + time | id), data = d)
+```
+
+Note: Failed pandoc install.
