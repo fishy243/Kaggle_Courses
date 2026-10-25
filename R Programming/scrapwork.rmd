@@ -76,3 +76,4 @@ m1 <- lmer(delbeh ~ time + (1 + time | id), data = d)
 ```
 
 Note: Failed pandoc install.
+Note 2: Phone edit
